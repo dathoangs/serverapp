@@ -30,7 +30,12 @@ export class LoginComponent implements OnInit {
         this.reloadPage();
       },
       err => {
-        this.errorMessage = err.error.message;
+        if (err.error ==  null) {
+          this.errorMessage = "Sai tài khoản hoặc mật khẩu";
+        } else {
+          console.log(err);
+          this.errorMessage = err.error.message;
+        }
         this.isLoginFailed = true;
       }
     );

@@ -160,6 +160,23 @@ export class HomeComponent implements OnInit {
       );
   }
 
+  printReport(): void {
+    this.appState$ = this.serverService.print$()
+      .pipe(
+        map(response => {
+          this.dataSubject.next(
+            {...response,
+              data: {servers: this.dataSubject.value.data.servers}}
+          );
+          return {dataState: DataState.LOADED_STATE,  appData: this.dataSubject.value}
+        }),
+        startWith({dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}),
+        catchError((error: String) => {
+          this.filterSubject.next('');
+          return of({dataState: DataState.ERROR_STATE, error: error})
+        })
+      );
+  }
 
   reloadPage() {
     window.location.reload();

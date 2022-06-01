@@ -79,6 +79,14 @@ export class ServerService {
     } else {
       return throwError(() => `Không ổn rồi - Check console - ErrorCode: ${handleError.status}`);
     }
-
   }
+
+  print$ = () => <Observable<CustomResponse>>
+    this.http.get<CustomResponse>(`${this.apiUrl}/server/report`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
+
 }
